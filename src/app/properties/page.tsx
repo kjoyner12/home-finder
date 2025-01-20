@@ -1,12 +1,11 @@
 'use client';
 
-import PropertyList from '@/components/properties/PropertyList';
+import { PropertyTracker } from '@/components/properties/PropertyTracker';
 
-export default function Properties() {
+export default function PropertiesPage() {
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">Saved Properties</h1>
-      <PropertyList />
+      <PropertyTracker />
     </div>
   );
 }
