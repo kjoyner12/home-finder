@@ -1,18 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Home, DollarSign, Ruler, Bed, Bath, ClipboardList, Edit, Trash2, Trees } from "lucide-react";
+import { Home, DollarSign, Ruler, Edit, Trash2 } from "lucide-react";
 
 interface Property {
   id: string;
@@ -30,7 +19,7 @@ const statusColors = {
   viewed: "bg-blue-500",
   interested: "bg-green-500",
   contacted: "bg-yellow-500",
-  none: "bg-gray-500"
+  none: "bg-gray-400"
 };
 
 export function PropertyTracker() {
@@ -54,97 +43,103 @@ export function PropertyTracker() {
   );
 
   return (
-    <Card className="w-full">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Saved Properties</CardTitle>
-        <div className="flex space-x-2">
-          <Input
+    <div className="p-6 max-w-7xl mx-auto">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold mb-6">Saved Properties</h1>
+        
+        <div className="flex gap-4 mb-6">
+          <input
+            type="text"
             placeholder="Search addresses..."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="w-64"
+            className="px-4 py-2 border rounded-lg flex-1"
           />
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="viewed">Viewed</SelectItem>
-              <SelectItem value="interested">Interested</SelectItem>
-              <SelectItem value="contacted">Contacted</SelectItem>
-              <SelectItem value="none">None</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Sort by..." />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="lotSize-desc">Lot Size: High to Low</SelectItem>
-              <SelectItem value="lotSize-asc">Lot Size: Low to High</SelectItem>
-              <SelectItem value="price-desc">Price: High to Low</SelectItem>
-              <SelectItem value="price-asc">Price: Low to High</SelectItem>
-              <SelectItem value="pricePerSqFt-desc">$/SqFt: High to Low</SelectItem>
-              <SelectItem value="pricePerSqFt-asc">$/SqFt: Low to High</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button>Add Property</Button>
+          
+          <select 
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-4 py-2 border rounded-lg w-48"
+          >
+            <option value="all">All Statuses</option>
+            <option value="viewed">Viewed</option>
+            <option value="interested">Interested</option>
+            <option value="contacted">Contacted</option>
+            <option value="none">None</option>
+          </select>
+
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-2 border rounded-lg w-56"
+          >
+            <option value="lotSize-desc">Lot Size: High to Low</option>
+            <option value="lotSize-asc">Lot Size: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="pricePerSqFt-desc">$/SqFt: High to Low</option>
+            <option value="pricePerSqFt-asc">$/SqFt: Low to High</option>
+          </select>
+
+          <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            Add Property
+          </button>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-4">
+
+        <div className="space-y-4">
           {filteredProperties.map((property) => (
-            <Card key={property.id} className="p-4">
+            <div key={property.id} className="border rounded-lg p-6 bg-white shadow-sm">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-semibold text-lg">{property.address}</h3>
-                  <div className="flex gap-4 mt-1">
-                    <p className="text-lg font-bold">
+                  <h3 className="text-xl font-semibold">{property.address}</h3>
+                  <div className="flex gap-4 mt-2">
+                    <p className="text-xl font-bold">
                       ${property.price.toLocaleString()}
                     </p>
-                    <p className="text-lg">
+                    <p className="text-gray-600">
                       ${calculatePricePerSqFt(property.price, property.squareFootage)}/sqft
                     </p>
                   </div>
                 </div>
-                <div className="flex space-x-2 items-center">
-                  <Badge className={statusColors[property.status]}>
+
+                <div className="flex items-center gap-2">
+                  <span className={`${statusColors[property.status]} text-white px-3 py-1 rounded-full text-sm`}>
                     {property.status}
-                  </Badge>
-                  <Button variant="outline" size="icon">
+                  </span>
+                  <button className="p-2 hover:bg-gray-100 rounded-lg">
                     <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
+                  </button>
+                  <button 
+                    className="p-2 hover:bg-gray-100 rounded-lg"
                     onClick={() => handleDeleteProperty(property.id)}
                   >
                     <Trash2 className="w-4 h-4" />
-                  </Button>
+                  </button>
                 </div>
               </div>
-              <div className="flex gap-2 mt-2">
-                <Badge variant="secondary" className="font-semibold">
+
+              <div className="flex gap-3 mt-4">
+                <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
                   {property.lotSize.toFixed(2)} acres
-                </Badge>
-                <Badge variant="secondary">
+                </span>
+                <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
                   {property.squareFootage.toLocaleString()} sqft
-                </Badge>
-                <Badge variant="secondary">
+                </span>
+                <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
                   {property.bedrooms} bed
-                </Badge>
-                <Badge variant="secondary">
+                </span>
+                <span className="bg-gray-100 px-3 py-1 rounded-full text-sm">
                   {property.bathrooms} bath
-                </Badge>
+                </span>
               </div>
+
               {property.notes && (
-                <p className="mt-2 text-sm text-gray-600">{property.notes}</p>
+                <p className="mt-3 text-gray-600 text-sm">{property.notes}</p>
               )}
-            </Card>
+            </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
