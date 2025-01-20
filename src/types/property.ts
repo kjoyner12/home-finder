@@ -1,22 +1,60 @@
 export interface Property {
-    id: string;
-    address: string;
-    price: number;
-    beds: number;
-    baths: number;
-    squareFeet: number;
-    acreage: number;
-    status: 'interested' | 'viewed' | 'contacted' | 'passed';
+  id: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    coordinates?: {
+      latitude: number;
+      longitude: number;
+    };
+  };
+  price: number;
+  listingDate: string;
+  squareFootage: number;
+  bedrooms: number;
+  bathrooms: number;
+  yearBuilt: number;
+  propertyType: 'single-family' | 'condo' | 'townhouse' | 'multi-family';
+  status: 'active' | 'pending' | 'sold';
+  features: string[];
+  description: string;
+  
+  // User-specific fields
+  userNotes?: string;
+  userRating?: number;
+  viewingHistory?: {
+    date: string;
     notes: string;
-    dateAdded: string;
-    // Calculated fields
-    pricePerSqFt: number;
+  }[];
+  userStatus: 'saved' | 'interested' | 'viewed' | 'contacted' | 'rejected';
+  
+  // Historical data
+  priceHistory?: {
+    date: string;
+    price: number;
+    event: 'listed' | 'price_change' | 'sold';
+  }[];
+  
+  // Media
+  images?: string[];
+  virtualTour?: string;
 }
 
-export interface PropertyFormData extends Omit<Property, 'id' | 'dateAdded' | 'pricePerSqFt'> {
-    // Form data doesn't need ID (generated), dateAdded (auto), or pricePerSqFt (calculated)
+export interface PropertyFilter {
+  minPrice?: number;
+  maxPrice?: number;
+  minBedrooms?: number;
+  minBathrooms?: number;
+  propertyType?: Property['propertyType'][];
+  status?: Property['status'][];
+  userStatus?: Property['userStatus'][];
+  minSquareFootage?: number;
+  maxSquareFootage?: number;
 }
 
-export const calculatePricePerSqFt = (price: number, squareFeet: number): number => {
-    return squareFeet > 0 ? Number((price / squareFeet).toFixed(2)) : 0;
-};
+export interface PropertySort {
+  field: keyof Property | 'address.city' | 'address.state';
+  direction: 'asc' | 'desc';
+}
