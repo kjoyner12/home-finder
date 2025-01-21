@@ -1,32 +1,16 @@
 # Home Finder
 
-A comprehensive mortgage calculator and property tracking application built with Next.js, TypeScript, and Tailwind CSS.
+A comprehensive property management application with mortgage calculator, property tracking, and map visualization.
 
 ## Features
 
 - 📊 Mortgage Calculator with affordability analysis
 - 🏠 Property tracking and comparison
-- 🗺️ Interactive map view
-- 💾 Data persistence
+- 🗺️ Interactive map visualization
+- 💾 Local data persistence
 - 📱 Responsive design
 
-## Tech Stack
-
-- Next.js 14
-- TypeScript
-- Tailwind CSS
-- Shadcn/UI Components
-- React Hooks
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 16.x or higher
-- npm or yarn
-- Git
-
-### Installation
+## Installation
 
 1. Clone the repository:
 ```bash
@@ -39,12 +23,20 @@ cd home-finder
 npm install
 ```
 
-3. Start the development server:
+3. Set up map markers:
+```bash
+mkdir -p public
+curl https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png -o public/marker-icon.png
+curl https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png -o public/marker-icon-2x.png
+curl https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png -o public/marker-shadow.png
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Project Structure
 
@@ -55,29 +47,70 @@ home-finder/
 │   │   ├── page.tsx           # Home page (Calculator)
 │   │   ├── properties/        # Properties page
 │   │   └── map/              # Map view page
-│   ├── components/            # Reusable components
+│   ├── components/            # React components
 │   │   ├── calculator/       # Calculator components
 │   │   ├── properties/       # Property tracking components
 │   │   ├── map/             # Map visualization components
 │   │   └── layout/          # Layout components
-│   └── lib/                  # Utilities and helpers
-└── public/                   # Static files
+│   ├── lib/                  # Utilities and helpers
+│   └── types/               # TypeScript types
+└── public/                   # Static files and images
 ```
 
-## Development Roadmap
+## Dependencies
 
-- [x] Project setup
-- [x] Basic navigation
-- [ ] Mortgage calculator implementation
-- [ ] Property tracking
-- [ ] Map integration
-- [ ] Data persistence
-- [ ] Deployment
+Main dependencies:
+- Next.js 14
+- React 18
+- TypeScript
+- Tailwind CSS
+- Leaflet/react-leaflet for mapping
+- UUID for ID generation
+- Radix UI components
+
+Development dependencies:
+- ESLint
+- TypeScript types
+- Tailwind CSS plugins
+
+## Features by Page
+
+### Calculator
+- Monthly payment calculation
+- Affordability analysis
+- Interactive inputs
+- Visual affordability indicators
+
+### Properties
+- Property listing and management
+- Filtering and sorting
+- Add/edit/delete properties
+- Status tracking
+
+### Map View
+- Interactive property map
+- Property markers with popups
+- Map controls and navigation
+- Property filtering
+
+## Local Development
+
+For local development, you can run:
+```bash
+# Start development server
+npm run dev
+
+# Run linting
+npm run lint
+
+# Build for production
+npm run build
+```
+
+## Data Storage
+
+Currently, all data is stored locally in the browser's localStorage. No backend or database is required.
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
